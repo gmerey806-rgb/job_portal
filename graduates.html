@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Түлектер | JobConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Навбар */
+        .navbar {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 255, 213, 0.2);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00ffd5, #00b8a9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a.active,
+        .nav-links a:hover {
+            color: #00ffd5;
+            background: rgba(0, 255, 213, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, rgba(15, 15, 35, 0.9), rgba(26, 26, 46, 0.9));
+            backdrop-filter: blur(20px);
+            padding: 2rem 5%;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 255, 213, 0.2);
+        }
+
+        .page-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #00ffd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #b8bcc7;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filters */
+        .filters {
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid rgba(0, 255, 213, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            color: #ffffff;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(135deg, #00ffd5, #00b8a9);
+            border-color: #00ffd5;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 213, 0.3);
+        }
+
+        /* Search */
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+
+        .search-box {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 255, 213, 0.2);
+            border-radius: 50px;
+            padding: 4px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+            color: #ffffff;
+        }
+
+        .search-box input::placeholder {
+            color: #8a8e95;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #00ffd5, #00b8a9);
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 45px;
+            color: #0f0f23;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 255, 213, 0.4);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 213, 0.6);
+        }
+
+        /* Jobs */
+        .jobs-container {
+            padding: 0 5% 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .job-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 213, 0.2);
+            border-radius: 24px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .job-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 213, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .job-card:hover::before {
+            left: 100%;
+        }
+
+        .job-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 255, 213, 0.25);
+            border-color: rgba(0, 255, 213, 0.5);
+        }
+
+        .job-card.hidden {
+            display: none;
+        }
+
+        .job-card img {
+            width: 90px;
+            height: 90px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 3px solid rgba(0, 255, 213, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover img {
+            transform: scale(1.1);
+            border-color: #00ffd5;
+        }
+
+        .job-card h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .job-card .company {
+            color: #8a8e95;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .job-card .details {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00ffd5;
+            margin-bottom: 1.5rem;
+        }
+
+        .apply-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #00ffd5, #00b8a9);
+            color: #0f0f23;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(3, 2, 70, 0.4);
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(17, 5, 82, 0.6);
+        }
+
+        .apply-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 4rem;
+        }
+
+        .page-btn {
+            padding: 1rem 2rem;
+            border: 2px solid rgba(0, 255, 213, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            color: #ffffff;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: linear-gradient(135deg, #04053b, #09043a);
+            border-color: #082e6a;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .filters {
+                padding: 1rem;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .content {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .job-card {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Навбар -->
+    <nav class="navbar">
+        <div class="logo">JobConnect</div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Басты бет</a></li>
+            <li><a href="" class="active"><i class="fas fa-graduation-cap"></i> Түлектер</a></li>
+            <li><a href="employers.html"><i class="fas fa-building"></i> Жұмыс берушілер</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Байланыс</a></li>
+        </ul>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <h1>Түлектер бөлімі</h1>
+        <p>Жаңа түлектерге арналған ең үздік жұмыс ұсыныстары. Біліміңізбен тәжірибе жинаңыз!</p>
+    </header>
+
+    <!-- Filters -->
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">Барлығы</button>
+        <button class="filter-btn" data-filter="IT">IT</button>
+        <button class="filter-btn" data-filter="Дизайн">Дизайн</button>
+        <button class="filter-btn" data-filter="Маркетинг">Маркетинг</button>
+        <button class="filter-btn" data-filter="Қаржы">Қаржы</button>
+        <button class="filter-btn" data-filter="HR">HR</button>
+        <button class="filter-btn" data-filter="Сату">Сату</button>
+        <button class="filter-btn" data-filter="Алматы">Алматы</button>
+        <button class="filter-btn" data-filter="Астана">Астана</button>
+        <button class="filter-btn" data-filter="Шымкент">Шымкент</button>
+        <button class="filter-btn" data-filter="Ақтөбе">Ақтөбе</button>
+    </div>
+
+    <!-- Search -->
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Мамандық, компания немесе қала іздеңіз...">
+            <button class="search-btn" id="searchBtn">
+                <i class="fas fa-search"></i> Іздеу
+            </button>
+        </div>
+    </div>
+
+    <!-- Jobs -->
+    <div class="jobs-container">
+        <div class="content" id="jobList">
+            <!-- IT Jobs -->
+            <div class="job-card" data-category="IT" data-location="Алматы">
+                <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=300&h=300&fit=crop&crop=center" alt="TechCorp">
+                <h3>Frontend Developer</h3>
+                <div class="company">Компания: TechCorp</div>
+                <span class="details">Алматы • 450 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+                </button>
+            </div>
+
+            <div class="job-card" data-category="IT" data-location="Астана">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=300&fit=crop&crop=center" alt="CodeBase">
+                <h3>Backend Developer</h3>
+                <div class="company">Компания: CodeBase</div>
+                <span class="details">Астана • 500 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+                </button>
+            </div>
+
+            <div class="job-card" data-category="IT" data-location="Ақтөбе">
+                <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=300&fit=crop&crop=center" alt="AktobeTech">
+                <h3>Mobile Developer</h3>
+                <div class="company">Компания: AktobeTech</div>
+                <span class="details">Ақтөбе • 410 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+                </button>
+            </div>
+
+            <!-- Design Jobs -->
+            <div class="job-card" data-category="Дизайн" data-location="Алматы">
+                <img src="https://images.unsplash.com/photo-1558618047-3c8c76bbb17b?w=300&h=300&fit=crop&crop=center" alt="CreativeLab">
+                <h3>UI/UX Designer</h3>
+                <div class="company">Компания: CreativeLab</div>
+                <span class="details">Алматы • 380 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+                </button>
+            </div>
+
+            <div class="job-card" data-category="Дизайн" data-location="Астана">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&h=300&fit=crop&crop=center" alt="ArtStudio">
+                <h3>Graphic Designer</h3>
+                <div class="company">Компания: ArtStudio</div>
+                <span class="details">Астана • 350 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+                </button>
+            </div>
+
+            <!-- Marketing Jobs -->
+            <div class="job-card" data-category="Маркетинг" data-location="Шымкент">
+                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop&crop=center" alt="MediaPro">
+                <h3>SMM Manager</h3>
+                <div class="company">Компания: MediaPro</div>
+                <span class="details">Шымкент • 320 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+                </button>
+            </div>
+
+            <div class="job-card" data-category="Маркетинг" data-location="Шымкент">
+                <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=300&h=300&fit=crop&crop=center" alt="MarketPro">
+                <h3>Digital Marketing</h3>
+                <div class="company">Компания: MarketPro</div>
+                <span class="details">Шымкент • 340 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+                </button>
+            </div>
+
+            <!-- Finance Jobs -->
+            <div class="job-card" data-category="Қаржы" data-location="Астана">
+                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=300&h=300&fit=crop&crop=center" alt="FinanceGroup">
+                <h3>Бухгалтер</h3>
+                <div class="company">Компания: FinanceGroup</div>
+                <span class="details">Астана • 400 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+                </button>
+            </div>
+
+            <!-- NEW JOBS ADDED -->
+             
+                </button>
+            </div>
+
+            <div class="job-card" data-category="Қаржы" data-location="Алматы">
+                <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=300&h=300&fit=crop&crop=center" alt="BankTech">
+                <h3>Финансовый аналитик</h3>
+                <div class="company">Компания: BankTech</div>
+                <span class="details">Алматы • 430 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+                </button>
+            </div>
+
+            <div class="job-card" data-category="HR" data-location="Астана">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=300&fit=crop&crop=center" alt="TalentHub">
+                <h3>Recruitment Specialist</h3>
+                <div class="company">Компания: TalentHub</div>
+                <span class="details">Астана • 390 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+                </button>
+            </div>
+
+            <div class="job-card" data-category="Сату" data-location="Шымкент">
+                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop&crop=center" alt="TradePro">
+                <h3>Business Development</h3>
+                <div class="company">Компания: TradePro</div>
+                <span class="details">Шымкент • 460 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+
+                    
+                </button>
+
+
+            </div>
+                </button>
+            </div>
+
+            <div class="job-card" data-category="IT" data-location="Астана">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=300&fit=crop&crop=center" alt="Astanatech">
+                <h3>Fullstack Developer</h3>
+                <div class="company">Компания: Astanatech</div>
+                <span class="details">Астана • 550 000 тг</span>
+                <button class="apply-btn applyBtn">
+                    <i class="fas fa-paper-plane"></i> Өтініш беру
+                </button>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="page-btn" id="prevBtn"><i class="fas fa-chevron-left"></i> Алдыңғы</button>
+            <button class="page-btn active" data-page="1">1</button>
+            <button class="page-btn" data-page="2">2</button>
+            <button class="page-btn" id="nextBtn">Келесі <i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <script>
+        // Фильтрлер функционалы
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Active класс өзгерту
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filter = button.dataset.filter;
+                filterJobs(filter);
+            });
+        });
+
+        function filterJobs(filter) {
+            const jobs = document.querySelectorAll('.job-card');
+            
+            jobs.forEach(job => {
+                const category = job.dataset.category;
+                const location = job.dataset.location;
+                
+                if (filter === 'all' || 
+                    category === filter || 
+                    location === filter) {
+                    job.classList.remove('hidden');
+                    job.style.display = 'block';
+                } else {
+                    job.classList.add('hidden');
+                    job.style.display = 'none';
+                }
+            });
+        }
+
+        // Поиск функционалы
+        document.getElementById("searchBtn").addEventListener("click", searchJobs);
+        
+        document.getElementById("searchInput").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                searchJobs();
+            }
+        });
+
+        function searchJobs() {
+            let input = document.getElementById("searchInput").value.toLowerCase().trim();
+            let jobs = document.querySelectorAll(".job-card:not(.hidden)");
+            
+            jobs.forEach(job => {
+                let title = job.querySelector("h3").innerText.toLowerCase();
+                let company = job.querySelector(".company").innerText.toLowerCase();
+                let details = job.querySelector(".details").innerText.toLowerCase();
+                
+                if (title.includes(input) || company.includes(input) || details.includes(input)) {
+                    job.style.display = "block";
+                } else {
+                    job.style.display = "none";
+                }
+            });
+        }
+
+        // Өтініш беру
+        document.querySelectorAll(".applyBtn").forEach(btn => {
+            btn.addEventListener("click", function(e) {
+                e.preventDefault();
+                
+                let btn = this;
+                let originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Жіберілді!';
+                btn.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 2000);
+                
+                showToast("Өтініш сәтті жіберілді! ✅ HR жақын арада хабарласады.");
+            });
+        });
+
+        // Toast notification
+        function showToast(message) {
+            let toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: linear-gradient(135deg, #10b981, #059669);
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+                z-index: 10000;
+                transform: translateX(400px);
+                transition: all 0.3s ease;
+                font-weight: 500;
+                max-width: 350px;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.style.transform = 'translateX(0)', 100);
+            setTimeout(() => {
+                toast.style.transform = 'translateX(400px)';
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Loading animation
+        window.addEventListener('load', function() {
+            const jobs = document.querySelectorAll('.job-card');
+            jobs.forEach((job, index) => {
+                setTimeout(() => {
+                    job.style.opacity = '1';
+                    job.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        });
+
+        // Pagination функционалы
+        let currentPage = 1;
+        const jobsPerPage = 8;
+        const totalPages = Math.ceil(document.querySelectorAll('.job-card').length / jobsPerPage);
+
+        function showPage(page) {
+            const jobs = Array.from(document.querySelectorAll('.job-card'));
+            jobs.forEach(job => job.style.display = 'none');
+            
+            const start = (page - 1) * jobsPerPage;
+            const end = start + jobsPerPage;
+            jobs.slice(start, end).forEach(job => job.style.display = 'block');
+            
+            document.querySelectorAll('.page-btn[data-page]').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.page) === page);
+            });
+        }
+
+        document.getElementById('prevBtn').onclick = () => {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        };
+
+        document.getElementById('nextBtn').onclick = () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        };
+
+        document.querySelectorAll('.page-btn[data-page]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentPage = parseInt(btn.dataset.page);
+                showPage(currentPage);
+            });
+        });
+
+        // Бастапқы көрсету
+        showPage(1);
+    </script>
+
+</body>
+</html>
